@@ -65,15 +65,36 @@
             font-weight: bold; font-size: 14px;
         }
 
-        /* --- HERO --- */
+        /* --- HERO & SEARCH BAR --- */
         .hero { text-align: center; padding: 50px 20px 20px; }
         .hero h1 { font-size: 42px; margin: 0 0 10px; }
-        .hero p { font-size: 18px; color: var(--light-wave); }
+        .hero p { font-size: 18px; color: var(--light-wave); margin-bottom: 30px; }
+
+        /* Style Search Bar */
+        .search-box {
+            max-width: 500px; margin: 0 auto 30px;
+            position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 15px 20px 15px 50px;
+            border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
+            color: white; font-family: 'Poppins'; font-size: 16px;
+            outline: none; transition: 0.3s;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.6); }
+        .search-input:focus {
+            border-color: var(--light-wave); box-shadow: 0 0 15px rgba(127, 219, 255, 0.3);
+        }
+        .search-icon {
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+            font-size: 20px; color: var(--light-wave);
+        }
 
         /* --- KATEGORI NAV --- */
         .category-nav {
             display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
-            margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2);
+            margin: 0 0 30px; padding: 20px; background: rgba(0,0,0,0.2);
             border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
         }
         .cat-btn {
@@ -109,7 +130,9 @@
         }
         .card:hover { transform: translateY(-5px); border-color: var(--light-wave); }
         
-        /* Brand Header di dalam Kartu */
+        /* Utility untuk menyembunyikan elemen saat search */
+        .hidden { display: none; }
+
         .brand-box {
             width: 100%; height: 80px; display: flex;
             align-items: center; justify-content: center;
@@ -150,11 +173,19 @@
             transition: 0.3s; font-size: 14px;
         }
         .btn-buy:hover { background: var(--light-wave); color: var(--deep-ocean); }
+        
         /* Button Color Overrides */
         .netflix .btn-buy { background: var(--netflix-red); }
         .spotify .btn-buy { background: var(--spotify-green); color: black; }
         .canva .btn-buy { background: var(--canva-purple); }
         .capcut .btn-buy { background: white; color: black; }
+
+        /* No Result Message */
+        .no-result-msg {
+            text-align: center; width: 100%; padding: 50px;
+            color: var(--light-wave); font-size: 20px;
+            display: none; /* Default hidden */
+        }
 
         /* --- MODAL CHECKOUT --- */
         .modal-overlay {
@@ -190,6 +221,7 @@
             .hero h1 { font-size: 28px; }
             .category-nav { border-radius: 15px; padding: 10px; }
             .cat-btn { padding: 8px 15px; font-size: 12px; }
+            .search-input { font-size: 14px; padding: 12px 15px 12px 40px; }
         }
     </style>
 </head>
@@ -209,152 +241,166 @@
         <section class="hero">
             <h1>Pintu Gerbang Produk Digital Premium</h1>
             <p>Streaming, AI, Editing, dan Kebutuhan Digital Lainnya.</p>
+            
+            <!-- SEARCH BAR -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="Cari produk (contoh: Netflix, AI, Canva)..." onkeyup="searchProduct()">
+            </div>
+            
+            <!-- KATEGORI NAV -->
+            <div class="category-nav">
+                <button class="cat-btn active" onclick="filterCategory('all')">Semua</button>
+                <button class="cat-btn" onclick="filterCategory('streaming')">🎬 Streaming</button>
+                <button class="cat-btn" onclick="filterCategory('ai')">🤖 AI Tools</button>
+                <button class="cat-btn" onclick="filterCategory('editing')">🎨 Editing</button>
+            </div>
         </section>
 
-        <!-- KATEGORI NAV -->
-        <div class="category-nav">
-            <button class="cat-btn active" onclick="filterCategory('all')">Semua</button>
-            <button class="cat-btn" onclick="filterCategory('streaming')">🎬 Streaming</button>
-            <button class="cat-btn" onclick="filterCategory('ai')">🤖 AI Tools</button>
-            <button class="cat-btn" onclick="filterCategory('editing')">🎨 Editing</button>
-            <button class="cat-btn" onclick="filterCategory('tools')">🛠 Tools</button>
+        <!-- CONTAINER PRODUK UTAMA -->
+        <div id="product-container">
+            
+            <!-- KATEGORI: STREAMING -->
+            <div class="section-title" id="sec-streaming">
+                <h2>🎬 Streaming & Musik</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="product-grid" id="cat-streaming">
+                <!-- Netflix -->
+                <div class="card netflix" data-keywords="netflix film movie bioskop">
+                    <div class="brand-box"><div class="brand-name">Netflix</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-netflix" onchange="updatePrice('netflix')">
+                            <option value="Netflix 1U1P (Private) 1 Bulan|55000">1U1P Private - 1 Bulan</option>
+                            <option value="Netflix 1P2U (Sharing) 1 Bulan|25000">1P2U Sharing - 1 Bulan</option>
+                            <option value="Netflix 1U1P 3 Bulan|145000">1U1P Private - 3 Bulan</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-netflix">Rp 55.000</div>
+                    <button class="btn-buy" onclick="addToCart('netflix')">Tambah ke Keranjang</button>
+                </div>
+
+                <!-- Disney+ -->
+                <div class="card disney" data-keywords="disney marvel star wars film movie">
+                    <div class="brand-box"><div class="brand-name">Disney+</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-disney" onchange="updatePrice('disney')">
+                            <option value="Disney+ 1U1P 1 Bulan|45000">1U1P Private - 1 Bulan</option>
+                            <option value="Disney+ 1P2U Sharing 1 Bulan|20000">1P2U Sharing - 1 Bulan</option>
+                            <option value="Disney+ 1U1P 1 Tahun|250000">1U1P Private - 1 Tahun</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-disney">Rp 45.000</div>
+                    <button class="btn-buy" onclick="addToCart('disney')">Tambah ke Keranjang</button>
+                </div>
+
+                <!-- iQIYI -->
+                <div class="card iqiyi" data-keywords="iqiyi drama asia cina">
+                    <div class="brand-box"><div class="brand-name">iQIYI</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-iqiyi" onchange="updatePrice('iqiyi')">
+                            <option value="iQIYI VIP 1 Bulan|30000">VIP Standard - 1 Bulan</option>
+                            <option value="iQIYI VIP 1 Tahun|180000">VIP Standard - 1 Tahun</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-iqiyi">Rp 30.000</div>
+                    <button class="btn-buy" onclick="addToCart('iqiyi')">Tambah ke Keranjang</button>
+                </div>
+
+                <!-- Spotify -->
+                <div class="card spotify" data-keywords="spotify musik music lagu">
+                    <div class="brand-box"><div class="brand-name">Spotify</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-spotify" onchange="updatePrice('spotify')">
+                            <option value="Spotify Premium 1 Bulan|15000">Premium 1 Bulan</option>
+                            <option value="Spotify Premium 3 Bulan|40000">Premium 3 Bulan</option>
+                            <option value="Spotify Premium 1 Tahun|120000">Premium 1 Tahun</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-spotify">Rp 15.000</div>
+                    <button class="btn-buy" onclick="addToCart('spotify')">Tambah ke Keranjang</button>
+                </div>
+            </div>
+
+            <!-- KATEGORI: AI TOOLS -->
+            <div class="section-title" id="sec-ai">
+                <h2>🤖 AI Tools</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="product-grid" id="cat-ai">
+                <!-- ChatGPT -->
+                <div class="card gpt" data-keywords="chatgpt ai openai writing tulis">
+                    <div class="brand-box"><div class="brand-name">ChatGPT</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-chatgpt" onchange="updatePrice('chatgpt')">
+                            <option value="ChatGPT Plus 1 Bulan|100000">Plus Account - 1 Bulan</option>
+                            <option value="ChatGPT API Key 5$|75000">API Key $5 Credit</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-chatgpt">Rp 100.000</div>
+                    <button class="btn-buy" onclick="addToCart('chatgpt')">Tambah ke Keranjang</button>
+                </div>
+                 <!-- Midjourney -->
+                 <div class="card" style="border-color: #5865F2;" data-keywords="midjourney ai art gambar image">
+                    <div class="brand-box"><div class="brand-name" style="color: #5865F2;">Midjourney</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-midjourney" onchange="updatePrice('midjourney')">
+                            <option value="Midjourney Basic 1 Bulan|120000">Basic Plan - 1 Bulan</option>
+                            <option value="Midjourney Standard 1 Bulan|200000">Standard Plan - 1 Bulan</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-midjourney">Rp 120.000</div>
+                    <button class="btn-buy" style="background:#5865F2" onclick="addToCart('midjourney')">Tambah ke Keranjang</button>
+                </div>
+            </div>
+
+            <!-- KATEGORI: EDITING -->
+            <div class="section-title" id="sec-editing">
+                <h2>🎨 Editing & Design</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="product-grid" id="cat-editing">
+                <!-- CapCut -->
+                <div class="card capcut" data-keywords="capcut video editor edit">
+                    <div class="brand-box" style="background:linear-gradient(45deg, #000, #333);"><div class="brand-name">CapCut Pro</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-capcut" onchange="updatePrice('capcut')">
+                            <option value="CapCut Pro 1 Bulan|25000">Pro 1 Bulan</option>
+                            <option value="CapCut Pro 1 Tahun|150000">Pro 1 Tahun</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-capcut">Rp 25.000</div>
+                    <button class="btn-buy" onclick="addToCart('capcut')">Tambah ke Keranjang</button>
+                </div>
+                <!-- Canva -->
+                <div class="card canva" data-keywords="canva design desain poster">
+                    <div class="brand-box"><div class="brand-name">Canva</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-canva" onchange="updatePrice('canva')">
+                            <option value="Canva Pro 1 Bulan|20000">Pro Team Invite - 1 Bulan</option>
+                            <option value="Canva Pro 1 Tahun|100000">Pro Team Invite - 1 Tahun</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-canva">Rp 20.000</div>
+                    <button class="btn-buy" onclick="addToCart('canva')">Tambah ke Keranjang</button>
+                </div>
+                <!-- Alight Motion -->
+                <div class="card alight" data-keywords="alight motion editing video">
+                    <div class="brand-box"><div class="brand-name">Alight Motion</div></div>
+                    <div class="selection-box">
+                        <select class="custom-select" id="select-alight" onchange="updatePrice('alight')">
+                            <option value="Alight Motion Pro 1 Bulan|25000">Pro Subscription - 1 Bulan</option>
+                        </select>
+                    </div>
+                    <div class="price-display" id="price-alight">Rp 25.000</div>
+                    <button class="btn-buy" onclick="addToCart('alight')">Tambah ke Keranjang</button>
+                </div>
+            </div>
         </div>
 
-        <!-- KATEGORI: STREAMING -->
-        <div class="section-title" id="sec-streaming">
-            <h2>🎬 Streaming & Musik</h2>
-            <div class="section-line"></div>
-        </div>
-        <div class="product-grid" id="cat-streaming">
-            <!-- Netflix -->
-            <div class="card netflix">
-                <div class="brand-box"><div class="brand-name">Netflix</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-netflix" onchange="updatePrice('netflix')">
-                        <option value="Netflix 1U1P (Private) 1 Bulan|55000">1U1P Private - 1 Bulan</option>
-                        <option value="Netflix 1P2U (Sharing) 1 Bulan|25000">1P2U Sharing - 1 Bulan</option>
-                        <option value="Netflix 1U1P 3 Bulan|145000">1U1P Private - 3 Bulan</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-netflix">Rp 55.000</div>
-                <button class="btn-buy" onclick="addToCart('netflix')">Tambah ke Keranjang</button>
-            </div>
-
-            <!-- Disney+ -->
-            <div class="card disney">
-                <div class="brand-box"><div class="brand-name">Disney+</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-disney" onchange="updatePrice('disney')">
-                        <option value="Disney+ 1U1P 1 Bulan|45000">1U1P Private - 1 Bulan</option>
-                        <option value="Disney+ 1P2U Sharing 1 Bulan|20000">1P2U Sharing - 1 Bulan</option>
-                        <option value="Disney+ 1U1P 1 Tahun|250000">1U1P Private - 1 Tahun</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-disney">Rp 45.000</div>
-                <button class="btn-buy" onclick="addToCart('disney')">Tambah ke Keranjang</button>
-            </div>
-
-            <!-- iQIYI -->
-            <div class="card iqiyi">
-                <div class="brand-box"><div class="brand-name">iQIYI</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-iqiyi" onchange="updatePrice('iqiyi')">
-                        <option value="iQIYI VIP 1 Bulan|30000">VIP Standard - 1 Bulan</option>
-                        <option value="iQIYI VIP 1 Tahun|180000">VIP Standard - 1 Tahun</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-iqiyi">Rp 30.000</div>
-                <button class="btn-buy" onclick="addToCart('iqiyi')">Tambah ke Keranjang</button>
-            </div>
-
-            <!-- Spotify -->
-            <div class="card spotify">
-                <div class="brand-box"><div class="brand-name">Spotify</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-spotify" onchange="updatePrice('spotify')">
-                        <option value="Spotify Premium 1 Bulan|15000">Premium 1 Bulan</option>
-                        <option value="Spotify Premium 3 Bulan|40000">Premium 3 Bulan</option>
-                        <option value="Spotify Premium 1 Tahun|120000">Premium 1 Tahun</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-spotify">Rp 15.000</div>
-                <button class="btn-buy" onclick="addToCart('spotify')">Tambah ke Keranjang</button>
-            </div>
-        </div>
-
-        <!-- KATEGORI: AI TOOLS -->
-        <div class="section-title" id="sec-ai">
-            <h2>🤖 AI Tools</h2>
-            <div class="section-line"></div>
-        </div>
-        <div class="product-grid" id="cat-ai">
-            <!-- ChatGPT -->
-            <div class="card gpt">
-                <div class="brand-box"><div class="brand-name">ChatGPT</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-chatgpt" onchange="updatePrice('chatgpt')">
-                        <option value="ChatGPT Plus 1 Bulan|100000">Plus Account - 1 Bulan</option>
-                        <option value="ChatGPT API Key 5$|75000">API Key $5 Credit</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-chatgpt">Rp 100.000</div>
-                <button class="btn-buy" onclick="addToCart('chatgpt')">Tambah ke Keranjang</button>
-            </div>
-             <!-- Midjourney -->
-             <div class="card" style="border-color: #5865F2;">
-                <div class="brand-box"><div class="brand-name" style="color: #5865F2;">Midjourney</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-midjourney" onchange="updatePrice('midjourney')">
-                        <option value="Midjourney Basic 1 Bulan|120000">Basic Plan - 1 Bulan</option>
-                        <option value="Midjourney Standard 1 Bulan|200000">Standard Plan - 1 Bulan</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-midjourney">Rp 120.000</div>
-                <button class="btn-buy" style="background:#5865F2" onclick="addToCart('midjourney')">Tambah ke Keranjang</button>
-            </div>
-        </div>
-
-        <!-- KATEGORI: EDITING -->
-        <div class="section-title" id="sec-editing">
-            <h2>🎨 Editing & Design</h2>
-            <div class="section-line"></div>
-        </div>
-        <div class="product-grid" id="cat-editing">
-            <!-- CapCut -->
-            <div class="card capcut">
-                <div class="brand-box" style="background:linear-gradient(45deg, #000, #333);"><div class="brand-name">CapCut Pro</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-capcut" onchange="updatePrice('capcut')">
-                        <option value="CapCut Pro 1 Bulan|25000">Pro 1 Bulan</option>
-                        <option value="CapCut Pro 1 Tahun|150000">Pro 1 Tahun</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-capcut">Rp 25.000</div>
-                <button class="btn-buy" onclick="addToCart('capcut')">Tambah ke Keranjang</button>
-            </div>
-            <!-- Canva -->
-            <div class="card canva">
-                <div class="brand-box"><div class="brand-name">Canva</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-canva" onchange="updatePrice('canva')">
-                        <option value="Canva Pro 1 Bulan|20000">Pro Team Invite - 1 Bulan</option>
-                        <option value="Canva Pro 1 Tahun|100000">Pro Team Invite - 1 Tahun</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-canva">Rp 20.000</div>
-                <button class="btn-buy" onclick="addToCart('canva')">Tambah ke Keranjang</button>
-            </div>
-            <!-- Alight Motion -->
-            <div class="card alight">
-                <div class="brand-box"><div class="brand-name">Alight Motion</div></div>
-                <div class="selection-box">
-                    <select class="custom-select" id="select-alight" onchange="updatePrice('alight')">
-                        <option value="Alight Motion Pro 1 Bulan|25000">Pro Subscription - 1 Bulan</option>
-                    </select>
-                </div>
-                <div class="price-display" id="price-alight">Rp 25.000</div>
-                <button class="btn-buy" onclick="addToCart('alight')">Tambah ke Keranjang</button>
-            </div>
+        <!-- Pesan Tidak Ditemukan -->
+        <div id="no-result" class="no-result-msg">
+            😢 Produk tidak ditemukan. Coba kata kunci lain.
         </div>
 
     </div>
@@ -390,16 +436,75 @@
     <script>
         let cart = [];
 
-        // --- FUNGSI UTAMA KERANJANG ---
+        // --- FUNGSI SEARCH & FILTER ---
+        function searchProduct() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            const sections = document.querySelectorAll('.section-title');
+            const noResult = document.getElementById('no-result');
+            let foundAny = false;
+
+            // Loop semua kartu
+            cards.forEach(card => {
+                const brandName = card.querySelector('.brand-name').innerText.toLowerCase();
+                const keywords = card.getAttribute('data-keywords');
+                
+                // Cek apakah cocok dengan nama atau keyword
+                if (brandName.includes(input) || (keywords && keywords.includes(input))) {
+                    card.classList.remove('hidden');
+                    foundAny = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Manajemen tampilan section title
+            sections.forEach(sec => {
+                // Cek apakah ada kartu yang tidak tersembunyi di section ini
+                // Logika sederhana: jika input kosong, tampilkan semua section
+                if(input === "") {
+                    sec.classList.remove('hidden');
+                } else {
+                    // Sembunyikan judul section saat search aktif agar rapi
+                    sec.classList.add('hidden');
+                }
+            });
+
+            // Tampilkan pesan 'tidak ditemukan'
+            if (foundAny) {
+                noResult.style.display = 'none';
+            } else {
+                noResult.style.display = 'block';
+            }
+        }
+
+        function filterCategory(cat) {
+            // Reset search input
+            document.getElementById('searchInput').value = '';
+            searchProduct(); // Trigger reset
+
+            // Update tombol aktif
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Logika Scroll
+            if(cat === 'all') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const section = document.getElementById('sec-' + cat);
+                if(section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
+        // --- FUNGSI KERANJANG ---
         function addToCart(productId) {
             const selectEl = document.getElementById('select-' + productId);
-            const priceEl = document.getElementById('price-' + productId);
-            
             const selectedOption = selectEl.options[selectEl.selectedIndex].value;
             const name = selectedOption.split('|')[0];
             const price = parseInt(selectedOption.split('|')[1]);
 
-            // Cek duplikat
             if (cart.find(item => item.name === name)) {
                 alert('Item ini sudah ada di keranjang!');
                 return;
@@ -408,7 +513,6 @@
             cart.push({ name, price });
             updateCartUI();
             
-            // Animasi ikon keranjang
             const countEl = document.getElementById('cart-count');
             countEl.style.transform = "scale(1.5)";
             setTimeout(() => countEl.style.transform = "scale(1)", 200);
@@ -442,7 +546,6 @@
 
             totalEl.innerText = 'Rp ' + total.toLocaleString('id-ID');
 
-            // Logika Link Telegram
             if (cart.length > 0) {
                 let text = "Halo Admin, saya sudah membayar pesanan berikut:\n";
                 cart.forEach(item => {
@@ -459,24 +562,6 @@
         function toggleCart() {
             const modal = document.getElementById('cart-modal');
             modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        // --- FUNGSI FILTER KATEGORI ---
-        function filterCategory(cat) {
-            // Update tombol aktif
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // Logika Show/Hide (Sederhana: scroll ke section)
-            // Untuk performa lebih baik di HTML static, kita cukup scroll
-            if(cat === 'all') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                const section = document.getElementById('sec-' + cat);
-                if(section) {
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
         }
     </script>
 </body>
