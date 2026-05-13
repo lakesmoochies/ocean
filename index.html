@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OceanDigital - Premium Digital Store</title>
+    <style>
+        /* --- SETUP DASAR & TEMA LAUT --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --deep-ocean: #001f3f;
+            --sea-blue: #0074D9;
+            --light-wave: #7FDBFF;
+            --sand-white: #ffffff;
+            --glass-bg: rgba(0, 31, 63, 0.75);
+            
+            /* Brand Colors */
+            --netflix-red: #E50914;
+            --disney-blue: #113CCF;
+            --iqiyi-green: #1DB954;
+            --spotify-green: #1DB954;
+            --gpt-teal: #10A37F;
+            --canva-purple: #7D2AE8;
+            --capcut-black: #000000;
+            --alight-purple: #9C27B0;
+            --telegram-blue: #0088cc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0; color: white;
+            background-color: var(--deep-ocean);
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,31,63,0.7), rgba(0,31,63,0.95)); z-index: -1;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* --- HEADER --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky; top: 0; background: rgba(0, 31, 63, 0.9); backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .logo { font-size: 28px; font-weight: 700; color: white; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--light-wave); }
+
+        .nav-cart {
+            cursor: pointer; background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px; border-radius: 30px;
+            display: flex; align-items: center; gap: 10px; transition: 0.3s;
+            border: 1px solid var(--light-wave); color: white;
+        }
+        .nav-cart:hover { background: var(--light-wave); color: var(--deep-ocean); }
+        .cart-count {
+            background: white; color: var(--deep-ocean); width: 24px; height: 24px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 14px;
+        }
+
+        /* --- HERO & SEARCH BAR --- */
+        .hero { text-align: center; padding: 50px 20px 20px; }
+        .hero h1 { font-size: 42px; margin: 0 0 10px; }
+        .hero p { font-size: 18px; color: var(--light-wave); margin-bottom: 30px; }
+
+        .search-box {
+            max-width: 500px; margin: 0 auto 30px;
+            position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 15px 20px 15px 50px;
+            border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
+            color: white; font-family: 'Poppins'; font-size: 16px;
+            outline: none; transition: 0.3s;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.6); }
+        .search-input:focus { border-color: var(--light-wave); box-shadow: 0 0 15px rgba(127, 219, 255, 0.3); }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--light-wave); }
+
+        /* --- KATEGORI NAV --- */
+        .category-nav {
+            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
+            margin: 0 0 30px; padding: 20px; background: rgba(0,0,0,0.2);
+            border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .cat-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 10px 25px; border-radius: 20px;
+            cursor: pointer; font-family: 'Poppins'; font-weight: 500; transition: 0.3s;
+        }
+        .cat-btn:hover, .cat-btn.active { background: var(--light-wave); color: var(--deep-ocean); border-color: var(--light-wave); }
+
+        /* --- SECTION & GRID --- */
+        .section-title { display: flex; align-items: center; gap: 15px; margin: 40px 0 20px; }
+        .section-title h2 { margin: 0; font-size: 24px; color: var(--light-wave); }
+        .section-line { flex-grow: 1; height: 1px; background: rgba(255,255,255,0.2); }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+
+        /* --- KARTU PRODUK --- */
+        .card {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px); border-radius: 20px; padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.4s; display: flex; flex-direction: column; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--light-wave); }
+        .hidden { display: none; }
+
+        .brand-box {
+            width: 100%; height: 80px; display: flex;
+            align-items: center; justify-content: center;
+            margin-bottom: 20px; border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+        }
+        .brand-name { font-size: 24px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        
+        /* Warna Brand */
+        .netflix .brand-name { color: var(--netflix-red); text-shadow: 0 0 10px rgba(229, 9, 20, 0.5); }
+        .disney .brand-name { color: white; text-shadow: 0 0 10px rgba(17, 60, 207, 0.7); }
+        .iqiyi .brand-name { color: var(--iqiyi-green); }
+        .spotify .brand-name { color: var(--spotify-green); }
+        .gpt .brand-name { color: var(--gpt-teal); }
+        .canva .brand-name { color: var(--canva-purple); }
+        .capcut .brand-name { color: white; }
+        .alight .brand-name { color: var(--alight-purple); }
+
+        .selection-box { width: 100%; margin-bottom: 15px; }
+        .custom-select {
+            width: 100%; padding: 10px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); color: white;
+            font-family: 'Poppins'; font-size: 13px; cursor: pointer;
+        }
+        .custom-select option { background: var(--deep-ocean); color: white; }
+
+        .price-display { font-size: 22px; font-weight: 700; color: white; margin-bottom: 15px; }
+
+        /* Tomb
