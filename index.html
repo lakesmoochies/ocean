@@ -24,7 +24,6 @@
             --canva-purple: #7D2AE8;
             --capcut-black: #000000;
             --alight-purple: #9C27B0;
-            --telegram-blue: #0088cc;
         }
 
         body {
@@ -66,30 +65,15 @@
             font-weight: bold; font-size: 14px;
         }
 
-        /* --- HERO & SEARCH BAR --- */
+        /* --- HERO --- */
         .hero { text-align: center; padding: 50px 20px 20px; }
         .hero h1 { font-size: 42px; margin: 0 0 10px; }
-        .hero p { font-size: 18px; color: var(--light-wave); margin-bottom: 30px; }
-
-        .search-box {
-            max-width: 500px; margin: 0 auto 30px;
-            position: relative;
-        }
-        .search-input {
-            width: 100%; padding: 15px 20px 15px 50px;
-            border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
-            color: white; font-family: 'Poppins'; font-size: 16px;
-            outline: none; transition: 0.3s;
-        }
-        .search-input::placeholder { color: rgba(255,255,255,0.6); }
-        .search-input:focus { border-color: var(--light-wave); box-shadow: 0 0 15px rgba(127, 219, 255, 0.3); }
-        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--light-wave); }
+        .hero p { font-size: 18px; color: var(--light-wave); }
 
         /* --- KATEGORI NAV --- */
         .category-nav {
             display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
-            margin: 0 0 30px; padding: 20px; background: rgba(0,0,0,0.2);
+            margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2);
             border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
         }
         .cat-btn {
@@ -97,14 +81,23 @@
             color: white; padding: 10px 25px; border-radius: 20px;
             cursor: pointer; font-family: 'Poppins'; font-weight: 500; transition: 0.3s;
         }
-        .cat-btn:hover, .cat-btn.active { background: var(--light-wave); color: var(--deep-ocean); border-color: var(--light-wave); }
+        .cat-btn:hover, .cat-btn.active {
+            background: var(--light-wave); color: var(--deep-ocean);
+            border-color: var(--light-wave);
+        }
 
         /* --- SECTION & GRID --- */
-        .section-title { display: flex; align-items: center; gap: 15px; margin: 40px 0 20px; }
+        .section-title {
+            display: flex; align-items: center; gap: 15px; margin: 40px 0 20px;
+        }
         .section-title h2 { margin: 0; font-size: 24px; color: var(--light-wave); }
         .section-line { flex-grow: 1; height: 1px; background: rgba(255,255,255,0.2); }
 
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
 
         /* --- KARTU PRODUK --- */
         .card {
@@ -115,17 +108,19 @@
             position: relative; overflow: hidden;
         }
         .card:hover { transform: translateY(-5px); border-color: var(--light-wave); }
-        .hidden { display: none; }
-
+        
+        /* Brand Header di dalam Kartu */
         .brand-box {
             width: 100%; height: 80px; display: flex;
             align-items: center; justify-content: center;
             margin-bottom: 20px; border-radius: 10px;
             background: rgba(255,255,255,0.05);
         }
-        .brand-name { font-size: 24px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-        
-        /* Warna Brand */
+        .brand-name {
+            font-size: 24px; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        /* Warna Spesifik Brand */
         .netflix .brand-name { color: var(--netflix-red); text-shadow: 0 0 10px rgba(229, 9, 20, 0.5); }
         .disney .brand-name { color: white; text-shadow: 0 0 10px rgba(17, 60, 207, 0.7); }
         .iqiyi .brand-name { color: var(--iqiyi-green); }
@@ -135,6 +130,7 @@
         .capcut .brand-name { color: white; }
         .alight .brand-name { color: var(--alight-purple); }
 
+        /* Form Elements */
         .selection-box { width: 100%; margin-bottom: 15px; }
         .custom-select {
             width: 100%; padding: 10px; border-radius: 8px;
@@ -145,5 +141,343 @@
         .custom-select option { background: var(--deep-ocean); color: white; }
 
         .price-display { font-size: 22px; font-weight: 700; color: white; margin-bottom: 15px; }
+        .price-display small { font-size: 12px; color: #aaa; }
 
-        /* Tomb
+        .btn-buy {
+            width: 100%; padding: 10px; border: none;
+            background: var(--sea-blue); color: white;
+            border-radius: 8px; font-weight: 600; cursor: pointer;
+            transition: 0.3s; font-size: 14px;
+        }
+        .btn-buy:hover { background: var(--light-wave); color: var(--deep-ocean); }
+        /* Button Color Overrides */
+        .netflix .btn-buy { background: var(--netflix-red); }
+        .spotify .btn-buy { background: var(--spotify-green); color: black; }
+        .canva .btn-buy { background: var(--canva-purple); }
+        .capcut .btn-buy { background: white; color: black; }
+
+        /* --- MODAL CHECKOUT --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 31, 63, 0.95); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3); width: 500px; max-width: 95%;
+            border-radius: 20px; overflow: hidden; color: white;
+        }
+        .modal-header { padding: 20px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { padding: 30px; max-height: 70vh; overflow-y: auto; }
+        .close-btn { cursor: pointer; font-size: 28px; line-height: 1; }
+        
+        .qris-section { text-align: center; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-top: 20px; }
+        .qris-img { width: 180px; height: 180px; background: white; margin: 15px auto; border-radius: 10px; padding: 5px; }
+        .total-price { font-size: 24px; font-weight: 700; color: var(--light-wave); margin: 20px 0; }
+        
+        .btn-telegram {
+            display: block; width: 100%; padding: 15px; background: #0088cc;
+            color: white; text-align: center; text-decoration: none;
+            border-radius: 8px; font-weight: 600; transition: 0.3s;
+        }
+        .btn-telegram:hover { background: #00aced; }
+        
+        .cart-item-list div { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+        .empty-cart { text-align: center; padding: 20px; opacity: 0.7; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .category-nav { border-radius: 15px; padding: 10px; }
+            .cat-btn { padding: 8px 15px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo">🌊 Ocean<span>Digital</span></div>
+            <div class="nav-cart" onclick="toggleCart()">
+                <span>Keranjang</span>
+                <div class="cart-count" id="cart-count">0</div>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero">
+            <h1>Pintu Gerbang Produk Digital Premium</h1>
+            <p>Streaming, AI, Editing, dan Kebutuhan Digital Lainnya.</p>
+        </section>
+
+        <!-- KATEGORI NAV -->
+        <div class="category-nav">
+            <button class="cat-btn active" onclick="filterCategory('all')">Semua</button>
+            <button class="cat-btn" onclick="filterCategory('streaming')">🎬 Streaming</button>
+            <button class="cat-btn" onclick="filterCategory('ai')">🤖 AI Tools</button>
+            <button class="cat-btn" onclick="filterCategory('editing')">🎨 Editing</button>
+            <button class="cat-btn" onclick="filterCategory('tools')">🛠 Tools</button>
+        </div>
+
+        <!-- KATEGORI: STREAMING -->
+        <div class="section-title" id="sec-streaming">
+            <h2>🎬 Streaming & Musik</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="product-grid" id="cat-streaming">
+            <!-- Netflix -->
+            <div class="card netflix">
+                <div class="brand-box"><div class="brand-name">Netflix</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-netflix" onchange="updatePrice('netflix')">
+                        <option value="Netflix 1U1P (Private) 1 Bulan|55000">1U1P Private - 1 Bulan</option>
+                        <option value="Netflix 1P2U (Sharing) 1 Bulan|25000">1P2U Sharing - 1 Bulan</option>
+                        <option value="Netflix 1U1P 3 Bulan|145000">1U1P Private - 3 Bulan</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-netflix">Rp 55.000</div>
+                <button class="btn-buy" onclick="addToCart('netflix')">Tambah ke Keranjang</button>
+            </div>
+
+            <!-- Disney+ -->
+            <div class="card disney">
+                <div class="brand-box"><div class="brand-name">Disney+</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-disney" onchange="updatePrice('disney')">
+                        <option value="Disney+ 1U1P 1 Bulan|45000">1U1P Private - 1 Bulan</option>
+                        <option value="Disney+ 1P2U Sharing 1 Bulan|20000">1P2U Sharing - 1 Bulan</option>
+                        <option value="Disney+ 1U1P 1 Tahun|250000">1U1P Private - 1 Tahun</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-disney">Rp 45.000</div>
+                <button class="btn-buy" onclick="addToCart('disney')">Tambah ke Keranjang</button>
+            </div>
+
+            <!-- iQIYI -->
+            <div class="card iqiyi">
+                <div class="brand-box"><div class="brand-name">iQIYI</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-iqiyi" onchange="updatePrice('iqiyi')">
+                        <option value="iQIYI VIP 1 Bulan|30000">VIP Standard - 1 Bulan</option>
+                        <option value="iQIYI VIP 1 Tahun|180000">VIP Standard - 1 Tahun</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-iqiyi">Rp 30.000</div>
+                <button class="btn-buy" onclick="addToCart('iqiyi')">Tambah ke Keranjang</button>
+            </div>
+
+            <!-- Spotify -->
+            <div class="card spotify">
+                <div class="brand-box"><div class="brand-name">Spotify</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-spotify" onchange="updatePrice('spotify')">
+                        <option value="Spotify Premium 1 Bulan|15000">Premium 1 Bulan</option>
+                        <option value="Spotify Premium 3 Bulan|40000">Premium 3 Bulan</option>
+                        <option value="Spotify Premium 1 Tahun|120000">Premium 1 Tahun</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-spotify">Rp 15.000</div>
+                <button class="btn-buy" onclick="addToCart('spotify')">Tambah ke Keranjang</button>
+            </div>
+        </div>
+
+        <!-- KATEGORI: AI TOOLS -->
+        <div class="section-title" id="sec-ai">
+            <h2>🤖 AI Tools</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="product-grid" id="cat-ai">
+            <!-- ChatGPT -->
+            <div class="card gpt">
+                <div class="brand-box"><div class="brand-name">ChatGPT</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-chatgpt" onchange="updatePrice('chatgpt')">
+                        <option value="ChatGPT Plus 1 Bulan|100000">Plus Account - 1 Bulan</option>
+                        <option value="ChatGPT API Key 5$|75000">API Key $5 Credit</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-chatgpt">Rp 100.000</div>
+                <button class="btn-buy" onclick="addToCart('chatgpt')">Tambah ke Keranjang</button>
+            </div>
+             <!-- Midjourney -->
+             <div class="card" style="border-color: #5865F2;">
+                <div class="brand-box"><div class="brand-name" style="color: #5865F2;">Midjourney</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-midjourney" onchange="updatePrice('midjourney')">
+                        <option value="Midjourney Basic 1 Bulan|120000">Basic Plan - 1 Bulan</option>
+                        <option value="Midjourney Standard 1 Bulan|200000">Standard Plan - 1 Bulan</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-midjourney">Rp 120.000</div>
+                <button class="btn-buy" style="background:#5865F2" onclick="addToCart('midjourney')">Tambah ke Keranjang</button>
+            </div>
+        </div>
+
+        <!-- KATEGORI: EDITING -->
+        <div class="section-title" id="sec-editing">
+            <h2>🎨 Editing & Design</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="product-grid" id="cat-editing">
+            <!-- CapCut -->
+            <div class="card capcut">
+                <div class="brand-box" style="background:linear-gradient(45deg, #000, #333);"><div class="brand-name">CapCut Pro</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-capcut" onchange="updatePrice('capcut')">
+                        <option value="CapCut Pro 1 Bulan|25000">Pro 1 Bulan</option>
+                        <option value="CapCut Pro 1 Tahun|150000">Pro 1 Tahun</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-capcut">Rp 25.000</div>
+                <button class="btn-buy" onclick="addToCart('capcut')">Tambah ke Keranjang</button>
+            </div>
+            <!-- Canva -->
+            <div class="card canva">
+                <div class="brand-box"><div class="brand-name">Canva</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-canva" onchange="updatePrice('canva')">
+                        <option value="Canva Pro 1 Bulan|20000">Pro Team Invite - 1 Bulan</option>
+                        <option value="Canva Pro 1 Tahun|100000">Pro Team Invite - 1 Tahun</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-canva">Rp 20.000</div>
+                <button class="btn-buy" onclick="addToCart('canva')">Tambah ke Keranjang</button>
+            </div>
+            <!-- Alight Motion -->
+            <div class="card alight">
+                <div class="brand-box"><div class="brand-name">Alight Motion</div></div>
+                <div class="selection-box">
+                    <select class="custom-select" id="select-alight" onchange="updatePrice('alight')">
+                        <option value="Alight Motion Pro 1 Bulan|25000">Pro Subscription - 1 Bulan</option>
+                    </select>
+                </div>
+                <div class="price-display" id="price-alight">Rp 25.000</div>
+                <button class="btn-buy" onclick="addToCart('alight')">Tambah ke Keranjang</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL CHECKOUT -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🛒 Keranjang & Pembayaran</h3>
+                <span class="close-btn" onclick="toggleCart()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="cart-items" class="cart-item-list">
+                    <!-- Items via JS -->
+                </div>
+                <div class="qris-section">
+                    <h4>Scan QRIS untuk Membayar</h4>
+                    <!-- GANTI DENGAN GAMBAR QRIS ANDA -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PaymentOceanDigital" alt="QRIS" class="qris-img">
+                    <p style="font-size:12px; opacity:0.8; margin-top:5px;">Scan via OVO, Dana, GoPay, M-Banking</p>
+                </div>
+                <div class="total-price">
+                    Total: <span id="total-display">Rp 0</span>
+                </div>
+                <a href="#" id="btn-pay" class="btn-telegram" target="_blank">
+                    ✓ Sudah Membayar (Chat Admin)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let cart = [];
+
+        // --- FUNGSI UTAMA KERANJANG ---
+        function addToCart(productId) {
+            const selectEl = document.getElementById('select-' + productId);
+            const priceEl = document.getElementById('price-' + productId);
+            
+            const selectedOption = selectEl.options[selectEl.selectedIndex].value;
+            const name = selectedOption.split('|')[0];
+            const price = parseInt(selectedOption.split('|')[1]);
+
+            // Cek duplikat
+            if (cart.find(item => item.name === name)) {
+                alert('Item ini sudah ada di keranjang!');
+                return;
+            }
+
+            cart.push({ name, price });
+            updateCartUI();
+            
+            // Animasi ikon keranjang
+            const countEl = document.getElementById('cart-count');
+            countEl.style.transform = "scale(1.5)";
+            setTimeout(() => countEl.style.transform = "scale(1)", 200);
+        }
+
+        function updatePrice(productId) {
+            const selectEl = document.getElementById('select-' + productId);
+            const priceEl = document.getElementById('price-' + productId);
+            const price = selectEl.value.split('|')[1];
+            priceEl.innerText = 'Rp ' + parseInt(price).toLocaleString('id-ID');
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cart-count');
+            const itemsEl = document.getElementById('cart-items');
+            const totalEl = document.getElementById('total-display');
+            const payBtn = document.getElementById('btn-pay');
+
+            countEl.innerText = cart.length;
+            itemsEl.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = '<div class="empty-cart">Keranjang masih kosong.</div>';
+            } else {
+                cart.forEach(item => {
+                    itemsEl.innerHTML += `<div><span>${item.name}</span><span>Rp ${item.price.toLocaleString('id-ID')}</span></div>`;
+                    total += item.price;
+                });
+            }
+
+            totalEl.innerText = 'Rp ' + total.toLocaleString('id-ID');
+
+            // Logika Link Telegram
+            if (cart.length > 0) {
+                let text = "Halo Admin, saya sudah membayar pesanan berikut:\n";
+                cart.forEach(item => {
+                    text += `- ${item.name}\n`;
+                });
+                text += `\nTotal: Rp ${total.toLocaleString('id-ID')}. Mohon segera diproses.`;
+                
+                payBtn.href = `https://t.me/bujajg?text=${encodeURIComponent(text)}`;
+            } else {
+                payBtn.href = "#";
+            }
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // --- FUNGSI FILTER KATEGORI ---
+        function filterCategory(cat) {
+            // Update tombol aktif
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Logika Show/Hide (Sederhana: scroll ke section)
+            // Untuk performa lebih baik di HTML static, kita cukup scroll
+            if(cat === 'all') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const section = document.getElementById('sec-' + cat);
+                if(section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
